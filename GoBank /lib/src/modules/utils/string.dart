@@ -63,6 +63,7 @@ class CustomStrings {
   static const String registerhere = 'Cadastre - se';
   static const String account = 'Ainda não tem conta?';
   static const String email = 'E-mail';
+  static const String phone = 'Telefone';
   static const String income = 'Income';
   static const String mar = '12 Mar 2021 at 10:00 PM';
   static const String mar1 = '09 Mar 2021 at 11:35 AM';

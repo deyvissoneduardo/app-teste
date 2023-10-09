@@ -25,5 +25,6 @@ class RecoveryPasswordRequestModel {
 
   factory RecoveryPasswordRequestModel.fromJson(String source) =>
       RecoveryPasswordRequestModel.fromMap(
-          json.decode(source) as Map<String, dynamic>);
+        json.decode(source) as Map<String, dynamic>,
+      );
 }

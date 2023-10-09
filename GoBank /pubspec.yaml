@@ -10,22 +10,23 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  cupertino_icons: ^1.0.2
+  cupertino_icons: 1.0.2
   qr_code_scanner:
-  flutter_onboarding_screen: ^2.0.2
-  provider: ^6.0.2
-  shared_preferences: ^2.2.1
+  flutter_onboarding_screen: 2.0.2
+  provider: 6.0.2
+  shared_preferences: 2.2.1
   pinput: 1.2.0
-  dotted_border: ^2.0.0+2
-  slide_to_act: ^2.0.1
-  fluttertoast: ^8.0.9
-  accordion: ^2.2.3
-  fl_chart: ^0.46.0
-  charts_flutter: ^0.12.0
-  syncfusion_flutter_charts: ^19.1.54
+  dotted_border: 2.0.0+2
+  slide_to_act: 2.0.1
+  fluttertoast: 8.0.9
+  accordion: 2.2.3
+  fl_chart: 0.46.0
+  charts_flutter: 0.12.0
+  syncfusion_flutter_charts: 19.1.54
   syncfusion_flutter_gauges:
-  dio: ^5.3.3
-  flutter_overlay_loader: ^2.0.0
+  dio: 5.3.3
+  flutter_overlay_loader: 2.0.0
+  validatorless: 1.2.3
 
 
  # flutter_localizations:
