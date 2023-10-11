@@ -12,9 +12,13 @@ class AuthModule extends HoopayModules {
           bindings: [
             ChangeNotifierProvider(
               create: (context) => LoginController(),
+              builder: (context, child) => const LoginPage(),
             ),
             ChangeNotifierProvider(
-              create: (context) => RegisterController(),
+              create: (context) => RegisterController(
+                accountService: context.read(),
+              ),
+              builder: (context, child) => const RegisterPage(),
             ),
           ],
           routers: {

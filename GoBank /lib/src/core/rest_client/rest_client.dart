@@ -1,9 +1,10 @@
-import 'package:dio/browser.dart';
 import 'package:dio/dio.dart';
+import 'package:dio/io.dart';
+import 'package:flutter/foundation.dart';
 
 import 'intercpetor/auth_intercpetor.dart';
 
-class RestClient extends DioForBrowser {
+class RestClient extends DioForNative with ChangeNotifier {
   late AuthInterceptor _authInterceptor;
   RestClient()
       : super(

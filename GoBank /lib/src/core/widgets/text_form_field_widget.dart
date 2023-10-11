@@ -6,7 +6,7 @@ import '../../modules/utils/media.dart';
 
 class TextFormFieldWidget extends StatefulWidget {
   final String? hintText;
-  final TextEditingController controller;
+  final TextEditingController? controller;
   final ValueChanged<String?>? onFieldSubmitted;
   final FormFieldValidator<String>? validator;
   final String? path;
@@ -17,7 +17,7 @@ class TextFormFieldWidget extends StatefulWidget {
   const TextFormFieldWidget({
     Key? key,
     this.hintText,
-    required this.controller,
+    this.controller,
     required this.onFieldSubmitted,
     this.validator,
     this.path,

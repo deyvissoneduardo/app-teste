@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:validatorless/validatorless.dart';
+import '../../../core/notifier/default_listener_notifier.dart';
 import '../../../core/widgets/text_form_field_widget.dart';
+import '../../../models/requests/user_register_model.dart';
 import '../../utils/button.dart';
 import '../../utils/colornotifire.dart';
 import '../../utils/media.dart';
 import '../../utils/string.dart';
-import '../../login/verify.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'register_controller.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({Key? key}) : super(key: key);
@@ -18,6 +21,36 @@ class RegisterPage extends StatefulWidget {
 
 class _RegisterPageState extends State<RegisterPage> {
   late ColorNotifire notifire;
+  final _nameEC = TextEditingController();
+  final _emailEC = TextEditingController();
+  final _phoneEC = TextEditingController();
+  final _docEC = TextEditingController();
+  final _passwordEC = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final defualtListener = DefaultListenerNotifier(
+        changeNotifier: context.read<RegisterController>(),
+      );
+      defualtListener.listener(
+        context: context,
+        successCallback: (notifier, listernerInstanse) {
+          listernerInstanse.dispose();
+        },
+      );
+    });
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _nameEC.dispose();
+    _emailEC.dispose();
+    _passwordEC.dispose();
+    super.dispose();
+  }
 
   void getdarkmodepreviousstate() async {
     final prefs = await SharedPreferences.getInstance();
@@ -32,19 +65,6 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     notifire = Provider.of<ColorNotifire>(context, listen: true);
-    final _nameEC = TextEditingController();
-    final _emailEC = TextEditingController();
-    final _passwordEC = TextEditingController();
-    final _formKey = GlobalKey<FormState>();
-
-    @override
-    void dispose() {
-      _nameEC.dispose();
-      _emailEC.dispose();
-      _passwordEC.dispose();
-      super.dispose();
-    }
-
     return Scaffold(
       backgroundColor: notifire.getprimerycolor,
       appBar: AppBar(
@@ -182,13 +202,12 @@ class _RegisterPageState extends State<RegisterPage> {
                                     ),
                                   ),
                                   TextFormFieldWidget(
-                                    controller: _passwordEC,
+                                    controller: _phoneEC,
                                     notifire: notifire,
                                     hintText: CustomStrings.phone,
                                     path: 'images/useradd.png',
-                                    obscureText: true,
                                     textInputAction: TextInputAction.next,
-                                    textInputType: TextInputType.text,
+                                    textInputType: TextInputType.phone,
                                     onFieldSubmitted: (value) {},
                                     validator: Validatorless.multiple([
                                       Validatorless.required(
@@ -202,6 +221,39 @@ class _RegisterPageState extends State<RegisterPage> {
                                   ),
                                   const SizedBox(
                                     height: 15,
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                      left: 20,
+                                      bottom: 15,
+                                    ),
+                                    child: Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: Text(
+                                        'Documento',
+                                        style: TextStyle(
+                                          color: notifire.getdarkscolor,
+                                          fontSize: height / 50,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  TextFormFieldWidget(
+                                    controller: _docEC,
+                                    notifire: notifire,
+                                    hintText: 'CPF',
+                                    path: 'images/useradd.png',
+                                    textInputAction: TextInputAction.next,
+                                    textInputType: TextInputType.number,
+                                    onFieldSubmitted: (value) {},
+                                    validator: Validatorless.multiple([
+                                      Validatorless.required(
+                                        'campo obrigatorio',
+                                      ),
+                                      Validatorless.cpf(
+                                        'cpf invalido',
+                                      ),
+                                    ]),
                                   ),
                                   Row(
                                     children: [
@@ -225,7 +277,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                     notifire: notifire,
                                     hintText: CustomStrings.createpassword,
                                     path: 'images/password.png',
-                                    obscureText: true,
+                                    // obscureText: true,
                                     textInputAction: TextInputAction.next,
                                     textInputType: TextInputType.text,
                                     onFieldSubmitted: (value) {},
@@ -260,12 +312,11 @@ class _RegisterPageState extends State<RegisterPage> {
                                     height: height / 70,
                                   ),
                                   TextFormFieldWidget(
-                                    controller: _passwordEC,
                                     notifire: notifire,
                                     hintText: CustomStrings.retypepassword,
                                     path: 'images/password.png',
-                                    obscureText: true,
-                                    textInputAction: TextInputAction.next,
+                                    // obscureText: true,
+                                    textInputAction: TextInputAction.done,
                                     textInputType: TextInputType.text,
                                     onFieldSubmitted: (value) {},
                                     validator: Validatorless.multiple([
@@ -283,18 +334,24 @@ class _RegisterPageState extends State<RegisterPage> {
                                   ),
                                   GestureDetector(
                                     onTap: () {
-                                      final state =
-                                          _formKey.currentState?.validate();
-                                      if (state == true) {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                const Verify(),
-                                          ),
-                                        );
-                                      } else {
-                                        debugPrint('invalido');
+                                      final formValid =
+                                          _formKey.currentState?.validate() ??
+                                              false;
+                                      if (formValid) {
+                                        context
+                                            .read<RegisterController>()
+                                            .registerUser(
+                                              userRegisterModel:
+                                                  UserRegisterModel(
+                                                email: _emailEC.text.trim(),
+                                                password:
+                                                    _passwordEC.text.trim(),
+                                                name: _nameEC.text.trim(),
+                                                document: _docEC.text.trim(),
+                                                phoneNumber:
+                                                    _phoneEC.text.trim(),
+                                              ),
+                                            );
                                       }
                                     },
                                     child: Custombutton.button(
