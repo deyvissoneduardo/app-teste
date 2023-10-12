@@ -11,7 +11,9 @@ class AuthModule extends HoopayModules {
       : super(
           bindings: [
             ChangeNotifierProvider(
-              create: (context) => LoginController(),
+              create: (context) => LoginController(
+                accountService: context.read(),
+              ),
               builder: (context, child) => const LoginPage(),
             ),
             ChangeNotifierProvider(

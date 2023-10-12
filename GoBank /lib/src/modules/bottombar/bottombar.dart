@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../home/home.dart';
-import '../home/scanpay/scan.dart';
+import '../trash/home.dart';
+import '../trash/scanpay/scan.dart';
 import '../utils/colornotifire.dart';
 import '../utils/media.dart';
 import 'package:provider/provider.dart';

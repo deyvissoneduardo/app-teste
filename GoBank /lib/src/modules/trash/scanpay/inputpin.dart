@@ -18,8 +18,6 @@ class _InputPinState extends State<InputPin> {
     notifire = Provider.of<ColorNotifire>(context, listen: true);
     return Scaffold(
       backgroundColor: notifire.getprimerycolor,
-
     );
   }
-
 }

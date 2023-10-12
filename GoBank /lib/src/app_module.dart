@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'app_widget.dart';
+import 'core/auth/auth_provider.dart';
 import 'core/rest_client/rest_client.dart';
 import 'modules/utils/colornotifire.dart';
 import 'repositories/account/account_repository.dart';
@@ -30,8 +31,13 @@ class AppModule extends StatelessWidget {
           ),
         ),
         Provider<AccountService>(
-          create: (context) =>
-              AccountServiceImpl(accountRepository: context.read()),
+          create: (context) => AccountServiceImpl(
+            accountRepository: context.read(),
+          ),
+        ),
+        ChangeNotifierProvider(
+          lazy: false,
+          create: (context) => AuthProvider()..loadListener(),
         ),
       ],
       child: const AppWidget(),

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:validatorless/validatorless.dart';
+import '../../../core/helpers/messages.dart';
+import '../../../core/notifier/default_listener_notifier.dart';
 import '../../../core/widgets/text_form_field_widget.dart';
-import '../register/register_page.dart';
+import '../../../models/requests/login_request_model.dart';
 import '/src/modules/profile/forgotpassword.dart';
 import '/src/modules/utils/button.dart';
 import '/src/modules/utils/media.dart';
@@ -10,6 +12,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '/src/modules/utils/colornotifire.dart';
+import 'login_controller.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -32,6 +35,21 @@ class _LoginState extends State<LoginPage> {
     } else {
       notifire.setIsDark = previusstate;
     }
+  }
+
+  @override
+  void initState() {
+    DefaultListenerNotifier(changeNotifier: context.read<LoginController>())
+        .listener(
+      context: context,
+      everCallback: (notifier, listenerInstance) {
+        if (notifier is LoginController && notifier.hasError) {
+          Messages.of(context).showInfo(notifier.error!);
+        }
+      },
+      successCallback: (notifier, listenerInstance) {},
+    );
+    super.initState();
   }
 
   @override
@@ -211,8 +229,18 @@ class _LoginState extends State<LoginPage> {
                                   ),
                                   GestureDetector(
                                     onTap: () {
-                                      // final isValid =
-                                      //     formKey.currentState?.validate();
+                                      final isValid =
+                                          formKey.currentState?.validate();
+                                      if (isValid == true) {
+                                        context.read<LoginController>().login(
+                                              loginRequestModel:
+                                                  LoginRequestModel(
+                                                email: _emailEC.text.trim(),
+                                                password:
+                                                    _passwordEC.text.trim(),
+                                              ),
+                                            );
+                                      }
                                       // Navigator.push(
                                       //   context,
                                       //   MaterialPageRoute(
@@ -330,13 +358,9 @@ class _LoginState extends State<LoginPage> {
                                       ),
                                       GestureDetector(
                                         onTap: () {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  const RegisterPage(),
-                                            ),
-                                          );
+                                          print('object');
+                                          Navigator.of(context)
+                                              .pushNamed('/register');
                                         },
                                         child: Text(
                                           CustomStrings.registerhere,
