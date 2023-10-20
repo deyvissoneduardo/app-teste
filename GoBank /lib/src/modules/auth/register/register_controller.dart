@@ -11,9 +11,9 @@ class RegisterController extends DefaultChangeNotifier {
   Future<void> registerUser({
     required UserRegisterModel userRegisterModel,
   }) async {
-    showLoadingAndResetState();
-    notifyListeners();
     try {
+      showLoadingAndResetState();
+      notifyListeners();
       await _accountService.register(registerModel: userRegisterModel);
       success();
     } on Exception {

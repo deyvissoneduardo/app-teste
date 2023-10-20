@@ -1,18 +1,17 @@
 import 'package:flutter/cupertino.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../navigator/hoopay_nagivator.dart';
 
 class AuthProvider extends ChangeNotifier {
   AuthProvider();
 
-  // _logout() {}
-  // User? get user => _firebaseAuth.currentUser;
-
-  void loadListener() {
-    // if (user != null) {
-    // HoopayNagivator.to.pushNamedAndRemoveUntil('/home', (route) => false);
-    // } else {
+  Future<void> loadListener() async {
+    final sp = await SharedPreferences.getInstance();
+    final token = sp.getString('token');
+    if (token != null) {
+      HoopayNagivator.to.pushNamedAndRemoveUntil('/home', (route) => false);
+    }
     HoopayNagivator.to.pushNamedAndRemoveUntil('/splash', (route) => false);
-    // }
   }
 }

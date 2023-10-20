@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'modules/auth/auth_module.dart';
+import 'modules/home/home_module.dart';
 import 'modules/splash/splash_page.dart';
 import 'core/navigator/hoopay_nagivator.dart';
 
@@ -20,6 +21,7 @@ class _AppWidgetState extends State<AppWidget> {
       navigatorKey: HoopayNagivator.navigatorKey,
       routes: {
         ...AuthModule().routers,
+        ...HomeModule().routers,
       },
       home: const SplashPage(),
     );

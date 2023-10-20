@@ -42,6 +42,7 @@ class AccountRepositoryImpl implements AccountRepository {
             '/sessions',
             data: loginRequestModel!.toMap(),
           );
+      print(result.data);
       return result.data!;
     } on DioException catch (e, s) {
       log('Error ao logar usuario', error: e, stackTrace: s);
