@@ -1,0 +1,58 @@
+name: hoopay_app
+description: A new Flutter project.
+publish_to: 'none' 
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.1.2 <4.0.0'
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: 1.0.2
+  get: 4.6.1
+  dio: 5.3.3
+  qr_code_scanner:
+  flutter_onboarding_screen: 2.0.2
+  shared_preferences: 2.2.1
+  pinput: 1.2.0
+  dotted_border: 2.0.0+2
+  slide_to_act: 2.0.1
+  fluttertoast: 8.0.9
+  accordion: 2.2.3
+  fl_chart: 0.46.0
+  charts_flutter: 0.12.0
+  syncfusion_flutter_charts: 19.1.54
+  syncfusion_flutter_gauges:
+  flutter_overlay_loader: 2.0.0
+  validatorless: 1.2.3
+  brasil_fields: ^1.9.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.0
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/images/
+  fonts:
+    - family: Gilroy Black
+      fonts:
+        - asset: assets/fonts/Gilroy-Black.ttf
+    - family: Gilroy Light
+      fonts:
+        - asset: assets/fonts/Gilroy-Light.ttf
+    - family: Gilroy Heavy
+      fonts:
+        - asset: assets/fonts/Gilroy-Heavy.ttf
+    - family: Gilroy Medium
+      fonts:
+        - asset: assets/fonts/Gilroy-Medium.ttf
+    - family: Gilroy Bold
+      fonts:
+        - asset: assets/fonts/Gilroy-Bold.otf
+    - family: Gilroy ExtraBold
+      fonts:
+        - asset: assets/fonts/Gilroy-ExtraBold.otf
