@@ -8,6 +8,7 @@ class LoginController extends GetxController {
   final AccountService _accountService;
 
   RxBool isLoading = false.obs;
+  RxBool viewPassword = false.obs;
   RxString erroMessage = ''.obs;
 
   LoginController({required AccountService accountService})

@@ -16,11 +16,25 @@ class RegisterPage extends GetView<RegisterController> {
   Widget build(BuildContext context) {
     final double height = MediaQuery.of(context).size.height;
     final double width = MediaQuery.of(context).size.width;
-    final nameEC = TextEditingController();
-    final emailEC = TextEditingController();
-    final phoneEC = TextEditingController();
-    final docEC = TextEditingController();
-    final passwordEC = TextEditingController();
+
+    void register() {
+      if (controller.nameEC.text.isEmpty) {
+        return Messages.of(context).showError('Nome e obrigatório');
+      }
+      if (controller.emailEC.text.isEmpty) {
+        return Messages.of(context).showError('E-mail e obrigatório');
+      }
+      if (controller.docEC.text.isEmpty) {
+        return Messages.of(context).showError('CPF e obrigatório');
+      }
+      if (controller.passwordEC.text.isEmpty &&
+          controller.passwordEC.text.length > 8) {
+        return Messages.of(context).showError(
+          'Senha e obrigatório, ou precisa ter 8 caracteres',
+        );
+      }
+      controller.registerUser();
+    }
 
     return Scaffold(
       backgroundColor: HoopayColor.primeryColor,
@@ -62,12 +76,11 @@ class RegisterPage extends GetView<RegisterController> {
                   ),
                 ),
                 TextFormFieldWidget(
-                  controller: nameEC,
+                  controller: controller.nameEC,
                   hintText: CustomStrings.fullnamehere,
                   path: 'assets/images/fullname.png',
                   textInputAction: TextInputAction.next,
                   textInputType: TextInputType.name,
-                  onFieldSubmitted: (value) {},
                 ),
                 const SizedBox(height: 20),
                 Text(
@@ -78,12 +91,11 @@ class RegisterPage extends GetView<RegisterController> {
                   ),
                 ),
                 TextFormFieldWidget(
-                  controller: emailEC,
+                  controller: controller.emailEC,
                   hintText: CustomStrings.emailhint,
                   path: 'assets/images/email.png',
                   textInputAction: TextInputAction.next,
                   textInputType: TextInputType.emailAddress,
-                  onFieldSubmitted: (value) {},
                 ),
                 const SizedBox(height: 20),
                 Text(
@@ -94,7 +106,7 @@ class RegisterPage extends GetView<RegisterController> {
                   ),
                 ),
                 TextFormFieldWidget(
-                  controller: phoneEC,
+                  controller: controller.phoneEC,
                   hintText: CustomStrings.phone,
                   path: 'assets/images/useradd.png',
                   textInputAction: TextInputAction.next,
@@ -103,7 +115,6 @@ class RegisterPage extends GetView<RegisterController> {
                     FilteringTextInputFormatter.digitsOnly,
                     TelefoneInputFormatter(),
                   ],
-                  onFieldSubmitted: (value) {},
                 ),
                 const SizedBox(height: 20),
                 Text(
@@ -114,12 +125,11 @@ class RegisterPage extends GetView<RegisterController> {
                   ),
                 ),
                 TextFormFieldWidget(
-                  controller: docEC,
+                  controller: controller.docEC,
                   hintText: 'CPF',
                   path: 'assets/images/useradd.png',
                   textInputAction: TextInputAction.next,
                   textInputType: TextInputType.number,
-                  onFieldSubmitted: (value) {},
                   inputFormatters: [
                     FilteringTextInputFormatter.digitsOnly,
                     CpfInputFormatter(),
@@ -133,13 +143,25 @@ class RegisterPage extends GetView<RegisterController> {
                     fontSize: height / 50,
                   ),
                 ),
-                TextFormFieldWidget(
-                  controller: passwordEC,
-                  hintText: CustomStrings.passwordhint,
-                  obscureText: true,
-                  path: 'assets/images/password.png',
-                  textInputAction: TextInputAction.next,
-                  onFieldSubmitted: (value) {},
+                Obx(
+                  () => TextFormFieldWidget(
+                    controller: controller.passwordEC,
+                    hintText: CustomStrings.passwordhint,
+                    obscureText: controller.viewPassword.value,
+                    path: 'assets/images/password.png',
+                    textInputAction: TextInputAction.next,
+                    suffixIcon: IconButton(
+                      onPressed: () {
+                        controller.viewPassword.value =
+                            !controller.viewPassword.value;
+                      },
+                      icon: Icon(
+                        controller.viewPassword.isFalse
+                            ? Icons.remove_red_eye_outlined
+                            : Icons.remove_red_eye,
+                      ),
+                    ),
+                  ),
                 ),
                 const SizedBox(height: 20),
                 Text(
@@ -149,34 +171,32 @@ class RegisterPage extends GetView<RegisterController> {
                     fontSize: height / 50,
                   ),
                 ),
-                TextFormFieldWidget(
-                  hintText: CustomStrings.retypepassword,
-                  path: 'assets/images/password.png',
-                  obscureText: true,
-                  textInputAction: TextInputAction.done,
-                  textInputType: TextInputType.text,
-                  onFieldSubmitted: (value) {},
+                Obx(
+                  () => TextFormFieldWidget(
+                    hintText: CustomStrings.retypepassword,
+                    path: 'assets/images/password.png',
+                    obscureText: controller.viewConfirmPassword.value,
+                    textInputAction: TextInputAction.done,
+                    textInputType: TextInputType.text,
+                    onFieldSubmitted: (value) => register(),
+                    suffixIcon: IconButton(
+                      onPressed: () {
+                        controller.viewConfirmPassword.value =
+                            !controller.viewConfirmPassword.value;
+                      },
+                      icon: Icon(
+                        controller.viewConfirmPassword.isFalse
+                            ? Icons.remove_red_eye_outlined
+                            : Icons.remove_red_eye,
+                      ),
+                    ),
+                  ),
                 ),
                 const SizedBox(height: 20),
                 ElevatedButtonWidget(
                   title: CustomStrings.registeraccount,
                   isLoading: controller.isLoading,
-                  onPressed: () {
-                    if (nameEC.text.isEmpty) {
-                      Messages.of(context).showInfo('Nome e obrigatorio');
-                    }
-                    if (emailEC.text.isEmpty) {
-                      Messages.of(context).showInfo('E-mail e obrigatorio');
-                    }
-                    if (docEC.text.isEmpty) {
-                      Messages.of(context).showInfo('CPF e obrigatorio');
-                    }
-                    if (passwordEC.text.isEmpty && passwordEC.text.length > 8) {
-                      Messages.of(context).showInfo(
-                        'Senha e obrigatorio, ou precisa ter 8 caracteres',
-                      );
-                    }
-                  },
+                  onPressed: () => register(),
                 ),
               ],
             ),

@@ -2,6 +2,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../helpers/hoopay_color.dart';
+
 class TextFormFieldWidget extends StatelessWidget {
   final String? hintText;
   final TextEditingController? controller;
@@ -14,11 +16,12 @@ class TextFormFieldWidget extends StatelessWidget {
   final List<TextInputFormatter>? inputFormatters;
   final ValueChanged<PointerDownEvent>? onTapOutside;
   final FocusNode? focusNode;
+  final Widget? suffixIcon;
   const TextFormFieldWidget({
     Key? key,
     this.hintText,
     this.controller,
-    required this.onFieldSubmitted,
+    this.onFieldSubmitted,
     this.validator,
     this.path,
     this.obscureText,
@@ -27,6 +30,7 @@ class TextFormFieldWidget extends StatelessWidget {
     this.inputFormatters,
     this.onTapOutside,
     this.focusNode,
+    this.suffixIcon,
   }) : super(key: key);
 
   @override
@@ -50,6 +54,8 @@ class TextFormFieldWidget extends StatelessWidget {
         filled: true,
         fillColor: Colors.white,
         hintText: hintText,
+        suffixIcon: suffixIcon,
+        suffixIconColor: HoopayColor.blueColor,
         prefixIcon: Padding(
           padding: const EdgeInsets.symmetric(
             vertical: 10,

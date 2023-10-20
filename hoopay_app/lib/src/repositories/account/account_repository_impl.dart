@@ -22,7 +22,7 @@ class AccountRepositoryImpl implements AccountRepository {
     try {
       await _restClient.unauth().post(
             '/accounts',
-            data: registerModel,
+            data: registerModel!.toMap(),
           );
     } on DioException catch (e, s) {
       log('Error ao registrar usuario', error: e, stackTrace: s);

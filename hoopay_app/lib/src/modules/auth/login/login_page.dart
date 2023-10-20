@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:validatorless/validatorless.dart';
 import '../../../core/helpers/form_helper.dart';
 import '../../../core/helpers/hoopay_color.dart';
 import '../../../core/helpers/messages.dart';
@@ -20,6 +19,7 @@ class LoginPage extends GetView<LoginController> {
     final double width = MediaQuery.of(context).size.width;
     final emailEC = TextEditingController();
     final passwordEC = TextEditingController();
+    final formKey = GlobalKey<FormState>();
     return Scaffold(
       backgroundColor: HoopayColor.primeryColor,
       body: Stack(
@@ -36,6 +36,7 @@ class LoginPage extends GetView<LoginController> {
           Padding(
             padding: const EdgeInsets.all(15.0),
             child: Form(
+              key: formKey,
               child: ListView(
                 children: [
                   Align(
@@ -71,7 +72,6 @@ class LoginPage extends GetView<LoginController> {
                     textInputType: TextInputType.emailAddress,
                     onFieldSubmitted: (value) {},
                     onTapOutside: (value) => context.unfocus(),
-                    validator: Validatorless.required('m'),
                   ),
                   const SizedBox(height: 15),
                   Text(
@@ -81,15 +81,27 @@ class LoginPage extends GetView<LoginController> {
                       fontSize: height / 50,
                     ),
                   ),
-                  TextFormFieldWidget(
-                    controller: passwordEC,
-                    hintText: CustomStrings.passwordhint,
-                    obscureText: true,
-                    path: 'assets/images/password.png',
-                    onTapOutside: (value) => context.unfocus(),
-                    textInputAction: TextInputAction.done,
-                    onFieldSubmitted: (value) {},
-                    validator: Validatorless.required('m'),
+                  Obx(
+                    () => TextFormFieldWidget(
+                      controller: passwordEC,
+                      hintText: CustomStrings.passwordhint,
+                      obscureText: controller.viewPassword.value,
+                      path: 'assets/images/password.png',
+                      onTapOutside: (value) => context.unfocus(),
+                      textInputAction: TextInputAction.done,
+                      onFieldSubmitted: (value) {},
+                      suffixIcon: IconButton(
+                        onPressed: () {
+                          controller.viewPassword.value =
+                              !controller.viewPassword.value;
+                        },
+                        icon: Icon(
+                          controller.viewPassword.isFalse
+                              ? Icons.remove_red_eye_outlined
+                              : Icons.remove_red_eye,
+                        ),
+                      ),
+                    ),
                   ),
                   const SizedBox(height: 20),
                   Container(
@@ -115,7 +127,7 @@ class LoginPage extends GetView<LoginController> {
                     isLoading: controller.isLoading,
                     onPressed: () {
                       if (emailEC.text.isEmpty || passwordEC.text.isEmpty) {
-                        Messages.of(context)
+                        return Messages.of(context)
                             .showError('E-mail e senha são obrigatórios');
                       }
                       controller.login(
